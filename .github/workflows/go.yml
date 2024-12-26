@@ -27,11 +27,20 @@ jobs:
         go mod tidy || true
         go mod download || true
 
+    - name: Clean up previous build artifacts
+      run: |
+        # Find all directories containing Go files and remove old build artifacts
+        for dir in $(find . -name '*.go' -exec dirname {} \; | sort -u); do
+          echo "Cleaning $dir"
+          rm -f "$dir/executable" # Adjust if you change the executable name
+        done
+      shell: bash
+
     - name: Build all Go packages
       run: |
         # Find all directories containing Go files and build them
         for dir in $(find . -name '*.go' -exec dirname {} \; | sort -u); do
           echo "Building $dir"
-          go build "$dir"
+          go build -o "$dir/executable" "$dir"
         done
       shell: bash
