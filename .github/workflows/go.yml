@@ -27,9 +27,10 @@ jobs:
         go mod tidy || true
         go mod download || true
 
-    - name: Build all Go executables
+    - name: Build all Go packages
       run: |
-        for dir in $(find . -type f -name "main.go" -exec dirname {} \;); do
+        # Find all directories containing Go files and build them
+        for dir in $(find . -name '*.go' -exec dirname {} \; | sort -u); do
           echo "Building $dir"
           go build "$dir"
         done
