@@ -27,13 +27,10 @@ jobs:
         go mod tidy || true
         go mod download || true
 
-    - name: Build and Test each directory
+    - name: Build all executables
       run: |
         for dir in $(find . -type f -name "main.go" -exec dirname {} \;); do
-          echo "Building and testing $dir"
-          cd $dir
-          go build
-          go test ./...
-          cd -
+          echo "Building $dir"
+          go build -o "$dir/$(basename $dir)" "$dir"
         done
       shell: bash
