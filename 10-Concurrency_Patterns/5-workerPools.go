@@ -1,4 +1,3 @@
-// Worker pools demo
 
 package main
 
